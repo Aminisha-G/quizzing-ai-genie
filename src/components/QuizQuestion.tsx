@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle, XCircle, Clock, ArrowRight } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, ArrowRight, Target, Zap } from 'lucide-react';
+import backgroundImage from '@/assets/quiz-background.jpg';
 
 interface Question {
   id: number;
@@ -100,16 +101,35 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
   const timePercentage = (timeLeft / timeLimit) * 100;
 
   return (
-    <div className="min-h-screen bg-gradient-background flex items-center justify-center p-4">
-      <div className="w-full max-w-4xl animate-fade-in">
+    <div 
+      className="min-h-screen bg-gradient-background flex items-center justify-center p-4 relative overflow-hidden"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Animated background elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 left-10 w-6 h-6 bg-accent/20 rounded-full animate-float"></div>
+        <div className="absolute top-20 right-16 w-8 h-8 bg-primary/15 rounded-full animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute bottom-20 left-20 w-4 h-4 bg-accent/25 rounded-full animate-float" style={{animationDelay: '0.8s'}}></div>
+        <div className="absolute bottom-32 right-32 w-10 h-10 bg-primary/10 rounded-full animate-float" style={{animationDelay: '2.2s'}}></div>
+      </div>
+
+      <div className="w-full max-w-4xl animate-fade-in relative z-10">
         {/* Progress and Timer */}
-        <div className="mb-6">
+        <div className="mb-6 backdrop-blur-sm bg-card/30 p-4 rounded-lg border border-primary/20">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-muted-foreground">
+            <span className="text-sm font-medium text-card-foreground flex items-center gap-2">
+              <Target className="w-4 h-4 animate-pulse" />
               Question {currentQuestion} of {totalQuestions}
             </span>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
+            <div className={`flex items-center gap-2 text-sm font-mono transition-colors duration-300 ${
+              timeLeft <= 10 ? 'text-destructive animate-pulse' : 'text-card-foreground'
+            }`}>
+              <Clock className={`h-4 w-4 ${timeLeft <= 10 ? 'animate-wiggle' : ''}`} />
               {timeLeft}s
             </div>
           </div>
@@ -121,9 +141,10 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
         </div>
 
         {/* Question Card */}
-        <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-card-quiz animate-bounce-in">
+        <Card className="bg-card/95 backdrop-blur-sm border-2 border-primary/20 shadow-card-quiz animate-bounce-in">
           <CardContent className="p-8">
-            <h2 className="text-2xl font-bold mb-8 text-center leading-relaxed">
+            <h2 className="text-2xl font-bold mb-8 text-center leading-relaxed animate-slide-in flex items-center justify-center gap-3">
+              <Zap className="w-6 h-6 text-accent animate-bounce" />
               {question.question}
             </h2>
 
@@ -134,11 +155,13 @@ const QuizQuestion: React.FC<QuizQuestionProps> = ({
                   onClick={() => handleAnswerClick(index)}
                   disabled={isAnswered}
                   className={`
-                    p-6 text-left border-2 rounded-lg transition-all duration-300
+                    p-6 text-left border-2 rounded-lg transition-all duration-300 backdrop-blur-sm
                     ${getOptionStyle(index)}
-                    ${!isAnswered ? 'hover:scale-105 cursor-pointer' : 'cursor-default'}
-                    flex items-center justify-between group
+                    ${!isAnswered ? 'hover:scale-105 cursor-pointer hover:shadow-lg' : 'cursor-default'}
+                    flex items-center justify-between group animate-fade-in
+                    ${selectedAnswer === index && isAnswered ? 'animate-scale-pulse' : ''}
                   `}
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="text-lg font-medium">{option}</span>
                   {getOptionIcon(index)}

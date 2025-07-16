@@ -4,7 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { Brain, Sparkles, Play } from 'lucide-react';
+import { Brain, Sparkles, Play, BookOpen, Zap } from 'lucide-react';
+import heroImage from '@/assets/quiz-hero.jpg';
+import backgroundImage from '@/assets/quiz-background.jpg';
 
 interface QuizSetupProps {
   onStartQuiz: (topic: string, questionCount: number, apiKey?: string) => void;
@@ -24,23 +26,45 @@ const QuizSetup: React.FC<QuizSetupProps> = ({ onStartQuiz, isLoading }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-background flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl animate-fade-in">
+    <div 
+      className="min-h-screen bg-gradient-background flex items-center justify-center p-4 relative overflow-hidden"
+      style={{
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url(${backgroundImage})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      }}
+    >
+      {/* Floating decorative elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-8 h-8 bg-accent/20 rounded-full animate-float"></div>
+        <div className="absolute top-40 right-32 w-6 h-6 bg-primary/20 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-32 left-32 w-10 h-10 bg-accent/15 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-20 right-20 w-4 h-4 bg-primary/25 rounded-full animate-float" style={{animationDelay: '0.5s'}}></div>
+      </div>
+
+      <div className="w-full max-w-2xl animate-fade-in relative z-10">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="p-4 bg-gradient-primary rounded-full shadow-quiz animate-pulse-glow">
-              <Brain className="h-12 w-12 text-white" />
+          <div className="flex items-center justify-center mb-6 relative">
+            <img 
+              src={heroImage} 
+              alt="Quiz Hero" 
+              className="w-40 h-24 object-cover rounded-xl shadow-lg animate-scale-pulse"
+            />
+            <div className="absolute -top-3 -right-3 p-3 bg-gradient-primary rounded-full shadow-quiz animate-wiggle">
+              <Zap className="h-8 w-8 text-primary-foreground" />
             </div>
           </div>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-quiz-primary to-quiz-secondary bg-clip-text text-transparent mb-4">
+          <h1 className="text-5xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4 animate-shimmer bg-[length:200%_100%]">
             QuizMaster AI
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-card-foreground/80 flex items-center justify-center gap-2">
+            <BookOpen className="w-5 h-5 animate-bounce" />
             Generate custom quizzes on any topic using AI
           </p>
         </div>
 
-        <Card className="bg-card/80 backdrop-blur-sm border-0 shadow-card-quiz animate-bounce-in">
+        <Card className="bg-card/95 backdrop-blur-sm border-2 border-primary/20 shadow-card-quiz animate-bounce-in">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl flex items-center justify-center gap-2">
               <Sparkles className="h-6 w-6 text-quiz-primary" />
