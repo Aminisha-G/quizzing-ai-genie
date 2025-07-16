@@ -18,6 +18,11 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        quiz: "bg-gradient-primary text-primary-foreground hover:shadow-quiz transition-all duration-300 hover:scale-105",
+        "quiz-secondary": "bg-gradient-secondary text-primary-foreground hover:shadow-quiz transition-all duration-300 hover:scale-105",
+        "quiz-success": "bg-gradient-success text-primary-foreground hover:shadow-quiz transition-all duration-300",
+        "quiz-danger": "bg-quiz-error text-primary-foreground hover:bg-quiz-error/90 transition-all duration-300",
+        "quiz-outline": "border-2 border-quiz-primary bg-transparent text-quiz-primary hover:bg-quiz-primary hover:text-primary-foreground transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",
